@@ -2,7 +2,12 @@ import sys, click, subprocess, json
 
 @click.command()
 @click.option('--account', '-a', prompt = 'Account ID', help = 'AWS Account ID.')
-@click.option('--user', '-u', prompt = 'IAM User name', help = 'AWS IAM User name.')
+@click.option(
+    '--user', '-u',
+    prompt = 'IAM User name',
+    default = lambda: os.environ.get('USER', ''),
+    show_default = 'current user',
+    help = 'AWS IAM User name.')
 @click.option('--token', '-t', prompt = 'MFA Token code', help = 'MFA Token code.')
 @click.option('--region', '-r', help = 'Target region.')
 @click.option('--profile', '-p', help = 'Use awscli profile.')
