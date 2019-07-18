@@ -1,0 +1,41 @@
+import sys, click, subprocess, json
+
+@click.command()
+@click.option('--account', help = 'AWS Account ID.')
+@click.option('--user', help = 'AWS IAM User name.')
+@click.option('--token', help = 'MFA Token.')
+@click.option('--region', default = 'ap-northeast-1', help = 'Target region. default region \"ap-northeast-1\"')
+
+def aws_mfa(account, user, token, region):
+    """
+    Create a temporary profile to access AWS resources using MFA.
+
+    example:
+
+      aws-mfa --account <your AWS account ID> --user <your user name> --token <MFA token>
+    """
+    arn = "arn:aws:iam::" + account + ":mfa/" + user
+    cmd = ["aws", "sts", "get-session-token", "--serial-number", arn, "--token-code", token]
+    try:
+        completed_process = subprocess.run(cmd, stdout = subprocess.PIPE, check = True)
+        session_token_json = json.loads(completed_process.stdout)
+    except subprocess.CalledProcessError as e:
+        sys.exit(1)
+    except ValueError:
+        sys.stdout.write("No JSON object could be decoded")
+        sys.exit(1)
+    temp_profile = 'tmp-' + account + '-' + user
+    set_aws_config("default.region", region, temp_profile)
+    set_aws_config("aws_access_key_id", session_token_json["Credentials"]["AccessKeyId"], temp_profile)
+    set_aws_config("aws_secret_access_key", session_token_json["Credentials"]["SecretAccessKey"], temp_profile)
+    set_aws_config("aws_session_token", session_token_json["Credentials"]["SessionToken"], temp_profile)
+    print("Successfully saved aws credential as profile " + temp_profile)
+    print("Expiration: " + session_token_json["Credentials"]["Expiration"])
+    print("Try it. aws s3 ls --profile " + temp_profile)
+
+def set_aws_config(key, value, profile):
+    cmd = ["aws", "configure", "set", key, value, "--profile=" + profile]
+    subprocess.run(cmd)
+
+if __name__ == '__main__':
+    aws_mfa()
