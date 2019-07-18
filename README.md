@@ -16,6 +16,8 @@ Execute with arguments.
 aws-mfa --account <account_id> --user <user_name> --token <token_code>
 ```
 
+To use a non-default profile for authentication, specify the `--profile` option.
+
 If successful, a profile with a temporary access key is created.
 You can use it by specifying a profile with the AWS-CLI tool.
 
