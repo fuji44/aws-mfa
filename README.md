@@ -46,6 +46,10 @@ For example, to display the bucket of S3:
 aws s3 ls --profile <temp profile>
 ```
 
+## Known issues
+
+On Windows, executing the aws command subprocess fails.
+
 ## Reference
 
 https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/
