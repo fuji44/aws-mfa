@@ -5,7 +5,8 @@ import sys, click, subprocess, json
 @click.option('--user', help = 'AWS IAM User name.')
 @click.option('--token', help = 'MFA Token.')
 @click.option('--region', default = 'ap-northeast-1', help = 'Target region. default region \"ap-northeast-1\"')
-def aws_mfa(account, user, token, region):
+@click.option('--profile', help = 'Use awscli profile.')
+def aws_mfa(account, user, token, region, profile):
     """
     Create a temporary profile to access AWS resources using MFA.
 
@@ -15,6 +16,9 @@ def aws_mfa(account, user, token, region):
     """
     arn = "arn:aws:iam::" + account + ":mfa/" + user
     cmd = ["aws", "sts", "get-session-token", "--serial-number", arn, "--token-code", token]
+    if not profile is None:
+        cmd.extend(["--profile", profile])
+
     try:
         completed_process = subprocess.run(cmd, stdout = subprocess.PIPE, check = True)
         session_token_json = json.loads(completed_process.stdout)
