@@ -11,7 +11,7 @@ setup(
     packages = ['awsmfa'],
     entry_points = {
         'console_scripts': [
-            'aws-mfa = awsmfa.aws_mfa:main'
+            'aws-mfa = awsmfa.aws_mfa:aws_mfa'
         ]
     }
 )

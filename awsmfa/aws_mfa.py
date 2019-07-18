@@ -5,7 +5,6 @@ import sys, click, subprocess, json
 @click.option('--user', help = 'AWS IAM User name.')
 @click.option('--token', help = 'MFA Token.')
 @click.option('--region', default = 'ap-northeast-1', help = 'Target region. default region \"ap-northeast-1\"')
-
 def aws_mfa(account, user, token, region):
     """
     Create a temporary profile to access AWS resources using MFA.
@@ -36,6 +35,3 @@ def aws_mfa(account, user, token, region):
 def set_aws_config(key, value, profile):
     cmd = ["aws", "configure", "set", key, value, "--profile=" + profile]
     subprocess.run(cmd)
-
-if __name__ == '__main__':
-    aws_mfa()
