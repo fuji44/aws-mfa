@@ -4,7 +4,7 @@ import sys, click, subprocess, json
 @click.option('--account', '-a', required = True, help = 'AWS Account ID.')
 @click.option('--user', '-u', required = True, help = 'AWS IAM User name.')
 @click.option('--token', '-t', required = True, help = 'MFA Token.')
-@click.option('--region', '-r', help = 'Target region. default region \"ap-northeast-1\"')
+@click.option('--region', '-r', help = 'Target region.')
 @click.option('--profile', '-p', help = 'Use awscli profile.')
 def aws_mfa(account, user, token, region, profile):
     """
