@@ -1,9 +1,9 @@
 import sys, click, subprocess, json
 
 @click.command()
-@click.option('--account', '-a', required = True, help = 'AWS Account ID.')
-@click.option('--user', '-u', required = True, help = 'AWS IAM User name.')
-@click.option('--token', '-t', required = True, help = 'MFA Token.')
+@click.option('--account', '-a', prompt = 'Account ID', help = 'AWS Account ID.')
+@click.option('--user', '-u', prompt = 'IAM User name', help = 'AWS IAM User name.')
+@click.option('--token', '-t', prompt = 'MFA Token code', help = 'MFA Token code.')
 @click.option('--region', '-r', help = 'Target region.')
 @click.option('--profile', '-p', help = 'Use awscli profile.')
 def aws_mfa(account, user, token, region, profile):
