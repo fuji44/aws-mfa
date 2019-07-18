@@ -1,11 +1,11 @@
 import sys, click, subprocess, json
 
 @click.command()
-@click.option('--account', required = True, help = 'AWS Account ID.')
-@click.option('--user', required = True, help = 'AWS IAM User name.')
-@click.option('--token', required = True, help = 'MFA Token.')
-@click.option('--region', help = 'Target region. default region \"ap-northeast-1\"')
-@click.option('--profile', help = 'Use awscli profile.')
+@click.option('--account', '-a', required = True, help = 'AWS Account ID.')
+@click.option('--user', '-u', required = True, help = 'AWS IAM User name.')
+@click.option('--token', '-t', required = True, help = 'MFA Token.')
+@click.option('--region', '-r', help = 'Target region. default region \"ap-northeast-1\"')
+@click.option('--profile', '-p', help = 'Use awscli profile.')
 def aws_mfa(account, user, token, region, profile):
     """
     Create a temporary profile to access AWS resources using MFA.
