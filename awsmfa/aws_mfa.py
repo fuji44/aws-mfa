@@ -1,10 +1,10 @@
 import sys, click, subprocess, json
 
 @click.command()
-@click.option('--account', help = 'AWS Account ID.')
-@click.option('--user', help = 'AWS IAM User name.')
-@click.option('--token', help = 'MFA Token.')
-@click.option('--region', default = 'ap-northeast-1', help = 'Target region. default region \"ap-northeast-1\"')
+@click.option('--account', required = True, help = 'AWS Account ID.')
+@click.option('--user', required = True, help = 'AWS IAM User name.')
+@click.option('--token', required = True, help = 'MFA Token.')
+@click.option('--region', help = 'Target region. default region \"ap-northeast-1\"')
 @click.option('--profile', help = 'Use awscli profile.')
 def aws_mfa(account, user, token, region, profile):
     """
@@ -27,11 +27,14 @@ def aws_mfa(account, user, token, region, profile):
     except ValueError:
         sys.stdout.write("No JSON object could be decoded")
         sys.exit(1)
+
     temp_profile = 'tmp-' + account + '-' + user
-    set_aws_config("default.region", region, temp_profile)
     set_aws_config("aws_access_key_id", session_token_json["Credentials"]["AccessKeyId"], temp_profile)
     set_aws_config("aws_secret_access_key", session_token_json["Credentials"]["SecretAccessKey"], temp_profile)
     set_aws_config("aws_session_token", session_token_json["Credentials"]["SessionToken"], temp_profile)
+    if not region is None:
+        set_aws_config("region", region, temp_profile)
+
     print("Successfully saved aws credential as profile " + temp_profile)
     print("Expiration: " + session_token_json["Credentials"]["Expiration"])
     print("Try it. aws s3 ls --profile " + temp_profile)
