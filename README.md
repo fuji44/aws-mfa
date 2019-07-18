@@ -49,6 +49,7 @@ aws s3 ls --profile <temp profile>
 ## Known issues
 
 On Windows, executing the aws command subprocess fails.
+However, if run on WSL, it works fine.
 
 ## Reference
 
