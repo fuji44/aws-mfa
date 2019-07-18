@@ -7,7 +7,7 @@ setup(
     license = 'MIT',
     author = 'fuji44',
     description = 'A CLI tool for configuring temporary access keys using MFA.',
-    install_requires = ['setuptools', 'click'],
+    install_requires = ['setuptools', 'click', 'awscli'],
     packages = ['awsmfa'],
     entry_points = {
         'console_scripts': [
